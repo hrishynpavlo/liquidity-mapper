@@ -1,0 +1,36 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "test",
+        "title": "liquides mapping",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {},
+        "version": "1.0"
+    },
+    "host": "localhost:4421",
+    "basePath": "/api",
+    "paths": {
+        "/app/info": {
+            "get": {
+                "description": "get app version",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "App"
+                ],
+                "summary": "returns current application's version",
+                "responses": {
+                    "200": {}
+                }
+            }
+        }
+    }
+}

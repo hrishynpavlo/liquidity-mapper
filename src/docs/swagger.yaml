@@ -1,0 +1,25 @@
+basePath: /api
+host: localhost:4421
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: test
+  license: {}
+  title: liquides mapping
+  version: "1.0"
+paths:
+  /app/info:
+    get:
+      consumes:
+      - application/json
+      description: get app version
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      summary: returns current application's version
+      tags:
+      - App
+swagger: "2.0"
