@@ -1,14 +1,25 @@
 basePath: /api
+definitions:
+  liquidity.Liquidance:
+    properties:
+      btc:
+        type: number
+      eur:
+        type: number
+      usd:
+        type: number
+    required:
+    - btc
+    - eur
+    - usd
+    type: object
 host: localhost:4421
 info:
   contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: test
+    email: pashagrishyn@gmail.com
+    name: Pavlo Hrishyn
   license: {}
-  title: liquides mapping
-  version: "1.0"
+  title: fluent liquidity mapper v1.0
 paths:
   /app/info:
     get:
@@ -22,4 +33,59 @@ paths:
       summary: returns current application's version
       tags:
       - App
+  /liquidity:
+    get:
+      consumes:
+      - application/json
+      description: returns 5 latest liquidities
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      summary: returns 5 latest liquidities
+      tags:
+      - Liquidity
+  /liquidity/:provider:
+    post:
+      consumes:
+      - application/json
+      description: saves in database new record and sets it in cache
+      parameters:
+      - description: provider
+        in: path
+        name: :provider
+        required: true
+        type: string
+      - description: liquidity
+        in: body
+        name: liquidity
+        required: true
+        schema:
+          $ref: '#/definitions/liquidity.Liquidance'
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      security:
+      - ApiKeyAuth: []
+      summary: creates new liquidity
+      tags:
+      - Liquidity
+  /liquidity/latest:
+    get:
+      consumes:
+      - application/json
+      description: returns 5 latest liquidities
+      produces:
+      - application/json
+      responses:
+        "200": {}
+      summary: returns latest liquidities
+      tags:
+      - Liquidity
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: X-Authorization
+    type: apiKey
 swagger: "2.0"

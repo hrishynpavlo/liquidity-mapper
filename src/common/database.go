@@ -30,7 +30,7 @@ func DbInit() *gorm.DB {
 	return DB
 }
 
-//GetInstance returns the pointer of db
-func GetInstance() *gorm.DB {
+//GetDbInstance returns the pointer of db
+func GetDbInstance() *gorm.DB {
 	return DB
 }

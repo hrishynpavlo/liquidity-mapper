@@ -19,9 +19,8 @@ var doc = `{
         "description": "{{.Description}}",
         "title": "{{.Title}}",
         "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
+            "name": "Pavlo Hrishyn",
+            "email": "pashagrishyn@gmail.com"
         },
         "license": {},
         "version": "{{.Version}}"
@@ -46,6 +45,111 @@ var doc = `{
                     "200": {}
                 }
             }
+        },
+        "/liquidity": {
+            "get": {
+                "description": "returns 5 latest liquidities",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "returns 5 latest liquidities",
+                "responses": {
+                    "200": {}
+                }
+            }
+        },
+        "/liquidity/:provider": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "saves in database new record and sets it in cache",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "creates new liquidity",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "provider",
+                        "name": ":provider",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "liquidity",
+                        "name": "liquidity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/liquidity.Liquidance"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {}
+                }
+            }
+        },
+        "/liquidity/latest": {
+            "get": {
+                "description": "returns 5 latest liquidities",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Liquidity"
+                ],
+                "summary": "returns latest liquidities",
+                "responses": {
+                    "200": {}
+                }
+            }
+        }
+    },
+    "definitions": {
+        "liquidity.Liquidance": {
+            "type": "object",
+            "required": [
+                "btc",
+                "eur",
+                "usd"
+            ],
+            "properties": {
+                "btc": {
+                    "type": "number"
+                },
+                "eur": {
+                    "type": "number"
+                },
+                "usd": {
+                    "type": "number"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "X-Authorization",
+            "in": "header"
         }
     }
 }`
@@ -61,12 +165,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "1.0",
+	Version:     "",
 	Host:        "localhost:4421",
 	BasePath:    "/api",
 	Schemes:     []string{},
-	Title:       "liquides mapping",
-	Description: "test",
+	Title:       "fluent liquidity mapper v1.0",
+	Description: "",
 }
 
 type s struct{}

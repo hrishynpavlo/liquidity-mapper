@@ -9,7 +9,8 @@ var memcache *cache.Cache
 
 //CacheInit creates cache instance
 func CacheInit() *cache.Cache {
-	memcache := cache.New(cache.NoExpiration, cache.NoExpiration)
+	c := cache.New(cache.NoExpiration, cache.NoExpiration)
+	memcache = c
 	return memcache
 }
 
