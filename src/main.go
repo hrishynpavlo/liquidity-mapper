@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 
+	"./common"
 	_ "./docs"
+	"./middlewares"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/patrickmn/go-cache"
 	swaggerFiles "github.com/swaggo/files"
@@ -30,34 +31,22 @@ type Liquidance struct {
 // @host localhost:4421
 // @BasePath /api
 func main() {
-	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		switch defaultTableName {
-		case "liquidances":
-			return "public.liquidance"
-		default:
-			return "public." + defaultTableName
-		}
 
-	}
-
-	db, err := gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=postgres password=Ph@!436623 sslmode=disable")
-	if err != nil {
-		panic("Can't connect to db")
-	}
+	db := common.DbInit()
 
 	defer db.Close()
 
 	host := gin.Default()
 	router := host.Group("/api")
 
-	memCache := cache.New(cache.NoExpiration, cache.NoExpiration)
+	memCache := common.CacheInit()
 
 	url := ginSwagger.URL("http://localhost:4421/swagger/doc.json")
 	host.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	router.GET("/app/info", getAppInfo)
 
-	router.POST("/liquidity/:provider", authMiddleware, func(context *gin.Context) {
+	router.POST("/liquidity/:provider", middlewares.Auth, func(context *gin.Context) {
 		var data Liquidance
 		context.BindJSON(&data)
 
@@ -111,13 +100,4 @@ func main() {
 // @Router /app/info [get]
 func getAppInfo(context *gin.Context) {
 	context.JSON(200, gin.H{"message": "version 1.0"})
-}
-
-func authMiddleware(context *gin.Context) {
-	auth := context.GetHeader("X-Authorization")
-	if auth == "test" {
-		context.Next()
-	} else {
-		context.AbortWithStatusJSON(401, gin.H{"message": "you don't have permission"})
-	}
 }
