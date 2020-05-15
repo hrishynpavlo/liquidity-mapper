@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"./common"
+	"./configuration"
 	_ "./docs"
 	app "./health"
 	"./liquidity"
@@ -23,6 +24,7 @@ import (
 // @name X-Authorization
 func main() {
 
+	configuration.SetUp()
 	common.DbInit()
 	common.CacheInit()
 

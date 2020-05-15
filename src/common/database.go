@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 
+	"../configuration"
 	"github.com/jinzhu/gorm"
 )
 
@@ -21,7 +22,7 @@ func DbInit() *gorm.DB {
 
 	}
 
-	db, err := gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=postgres password=Ph@!436623 sslmode=disable")
+	db, err := gorm.Open("postgres", configuration.GetDbConnectionString())
 	if err != nil {
 		fmt.Println("Can't connect to db")
 	}
