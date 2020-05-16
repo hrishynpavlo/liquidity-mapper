@@ -8,6 +8,7 @@ import (
 	_ "./docs"
 	app "./health"
 	"./liquidity"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	swaggerFiles "github.com/swaggo/files"
@@ -29,6 +30,7 @@ func main() {
 	common.CacheInit()
 
 	host := gin.Default()
+	host.Use(cors.Default())
 	router := host.Group("/api")
 
 	host.NoRoute(func(context *gin.Context) {
