@@ -30,7 +30,10 @@ func main() {
 	common.CacheInit()
 
 	host := gin.Default()
-	host.Use(cors.Default())
+	policy := cors.DefaultConfig()
+	policy.AllowHeaders = append(policy.AllowHeaders, "X-Authorization")
+	policy.AllowAllOrigins = true
+	host.Use(cors.New(policy))
 	router := host.Group("/api")
 
 	host.NoRoute(func(context *gin.Context) {
